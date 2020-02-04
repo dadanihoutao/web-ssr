@@ -40,7 +40,20 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/axios'
   ],
+  axios: {
+    proxy: true
+  },
+  proxy: {
+    '/api': {
+      target: 'http://192.168.0.106:3001',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api': '/api'
+      }
+    }
+  },
   /*
   ** Build configuration
   */
@@ -49,6 +62,9 @@ module.exports = {
     ** You can extend webpack config here
     */
     extend (config, ctx) {
-    }
+    },
+    // 开启webpack打包解析文件大小插件（webpack-bundle-analyze）
+    // analyze: true
+    vendor: ['axios'] // 为防止重复打包
   }
 }

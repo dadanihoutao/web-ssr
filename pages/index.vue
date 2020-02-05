@@ -1,6 +1,6 @@
 <template>
     <div class="list-page">
-        <Dropdown>
+        <!-- <Dropdown>
             <a href="javascript:void(0)">
                 下拉菜单
                 <Icon type="ios-arrow-down"></Icon>
@@ -8,7 +8,7 @@
             <DropdownMenu slot="list">
                 <DropdownItem v-for="item in info" :key="item.id" :name="item.id">{{ item.title }}</DropdownItem>
             </DropdownMenu>
-        </Dropdown>
+        </Dropdown> -->
     </div>
 </template>
 
@@ -26,6 +26,11 @@ export default {
                 categoryId: ''
             }
         }
+    },
+    beforeCreate () {
+        this.$router.push({
+            path: '/article'
+        })
     },
     created () {
         // console.log(111)

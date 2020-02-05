@@ -23,16 +23,27 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    'iview/dist/styles/iview.css'
+    'iview/dist/styles/iview.css',
+    'assets/less/index.less'
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
+    {src: '@/plugins/route', ssr: true},
     {src: '@/plugins/iview', ssr: true},
     {src: '@/plugins/lockr', ssr: true},
     {src: '@/plugins/axios', ssr: true}
   ],
+  route: {
+    extendRoutes (routes, resolve) {
+        routes.push({
+            name: 'article',
+            path: '/',
+            component: resolve(__dirname, 'pages/article/index.vue')
+        })    
+    }
+  },
   /*
   ** Nuxt.js dev-modules
   */

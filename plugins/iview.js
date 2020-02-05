@@ -173,7 +173,7 @@ const iviewModule = {
 Object.keys(iviewModule).forEach(key => {
   Vue.component(key, iviewModule[key])
 })
-
+Vue.component('yLayout', () => import('@/components/home/layout.vue'))
 // 将iview模块挂载到vue对象上去
 Vue.prototype.$Loading = LoadingBar
 Vue.prototype.$Message = Message

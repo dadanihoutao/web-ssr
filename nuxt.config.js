@@ -29,7 +29,9 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/iview'
+    {src: '@/plugins/iview', ssr: true},
+    {src: '@/plugins/lockr', ssr: true},
+    {src: '@/plugins/axios', ssr: true}
   ],
   /*
   ** Nuxt.js dev-modules
@@ -47,7 +49,7 @@ module.exports = {
   },
   proxy: {
     '/api': {
-      target: 'http://192.168.0.106:3001',
+      target: 'http://192.168.0.104:3001',
       changeOrigin: true,
       pathRewrite: {
         '^/api': '/api'
@@ -61,7 +63,17 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-    extend (config, ctx) {
+    // extend (config, ctx) {
+    // },
+    extend (config, { isDev, isClient }) {
+        // if (isDev && isClient) {
+        //   config.module.rules.push({
+        //     enforce: 'pre',
+        //     test: /\.(js|vue)$/,
+        //     loader: 'eslint-loader',
+        //     exclude: /(node_modules)/
+        //   })
+        // }
     },
     // 开启webpack打包解析文件大小插件（webpack-bundle-analyze）
     // analyze: true

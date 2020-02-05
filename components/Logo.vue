@@ -19,7 +19,6 @@ export default {
     },
     async asyncData () {
         let {data} = await axios.get('https://api.myjson.com/bins/111ogg')
-        console.log(data)
         return {info: data}
     }
 }

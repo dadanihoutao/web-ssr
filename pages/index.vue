@@ -1,10 +1,14 @@
 <template>
     <div class="list-page">
-        <!-- <img src="~static/abc.jpg" alt=""> -->
-        {{ name }}
-        <ul>
-            <li v-for="item in info" :key="item.id">{{ item.title }}</li>
-        </ul>
+        <Dropdown>
+            <a href="javascript:void(0)">
+                下拉菜单
+                <Icon type="ios-arrow-down"></Icon>
+            </a>
+            <DropdownMenu slot="list">
+                <DropdownItem v-for="item in info" :key="item.id" :name="item.id">{{ item.title }}</DropdownItem>
+            </DropdownMenu>
+        </Dropdown>
     </div>
 </template>
 

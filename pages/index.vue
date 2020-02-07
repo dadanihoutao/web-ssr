@@ -19,12 +19,12 @@ export default {
         return {
             name: '这是请求页面',
             data: {},
-            params: {
-                page: 1,
-                pageSize: 10,
-                order: 0,
-                categoryId: ''
-            }
+            // params: {
+            //     page: 1,
+            //     pageSize: 10,
+            //     order: 0,
+            //     categoryId: ''
+            // }
         }
     },
     beforeCreate () {
@@ -35,18 +35,19 @@ export default {
     created () {
         // console.log(111)
     },
-    async asyncData ({app}) {
-        // console.log(app)
-        const params = {
-            page: 1,
-            pageSize: 10,
-            order: 0,
-            categoryId: ''
-        }
-        let {data} = await app.$axios.get('/api/article/list', {params})
-        console.log(data)
-        return {info: data.data || []}
-    }
+    // async asyncData ({app}) {
+    //     // console.log(app)
+    //     const paramsData = {
+    //         page: 1,
+    //         pageSize: 10,
+    //         order: 0,
+    //         categoryId: ''
+    //     }
+    //     let {data} = await app.$axios.get('/api/article/list', {paramsData})
+    //     // console.log(111)
+    //     // console.log(data)
+    //     return {info: data.data || []}
+    // }
 }
 </script>
 <style lang="less">

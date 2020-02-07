@@ -2,6 +2,7 @@
  * @Author: 阿洋
  * @Last Modified by: ayang
  * @Last Modified time: 2020-02-04 21:50:29
+ * 注意事项，调用axios的请求方法，参数统一用对象包裹 名字为 params {params}
  */
 
 import qs from 'qs'
@@ -11,19 +12,17 @@ import { Message } from 'iview'
 export default function ({ $axios, redirect, app }) {
     $axios.defaults.timeout = 30000
     // http request
-    $axios.interceptors.request.use((config) => {
+    $axios.onRequest((config) => {
         config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
         // 请求头参数处理
         config.headers['Authorization'] = 'Bearer undefined'
-        console.log(config)
-        config.data = qs.stringify(config.data)
+        // config.params = qs.stringify(config.params)
         return config
     }, (error) => {
         return Promise.reject(error)
     })
-
     // http response
-    $axios.interceptors.response.use((res) => {
+    $axios.onResponse((res) => {
         if (res.status && res.status === 200) {
             if (res.data.code === 101) {
                 if (process.client) {

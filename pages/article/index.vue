@@ -83,6 +83,8 @@ export default {
             categoryId: '',
             searchVal: ''
         }
+        let {data} = await app.$axios.get('/api/article/list', {params})
+        // console.log(data)
         // this.$get('/api/article/list', params).then(res => {
         //     if (res.code === 200) {
         //         this.listData = res.data
@@ -92,8 +94,6 @@ export default {
         //         this.$Message.error(res.msg)
         //     }
         // })
-        let {data} = await app.$axios.get('/api/article/list', {params})
-        console.log(data)
     },
     methods: {
         changePage (page) {

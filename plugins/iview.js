@@ -76,7 +76,8 @@ import {
   Tooltip,
   Transfer,
   Tree,
-  Upload
+  Upload,
+  Affix
 } from 'iview'
 // iview基础模块
 const components = {
@@ -148,7 +149,8 @@ const components = {
   Tooltip,
   Transfer,
   Tree,
-  Upload
+  Upload,
+  Affix
 }
 
 const iviewModule = {

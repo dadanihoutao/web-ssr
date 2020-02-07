@@ -24,7 +24,8 @@ module.exports = {
   */
   css: [
     'iview/dist/styles/iview.css',
-    'assets/less/index.less'
+    'assets/less/index.less',
+    'assets/font/iconfont.css'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -33,7 +34,8 @@ module.exports = {
     {src: '@/plugins/route', ssr: true},
     {src: '@/plugins/iview', ssr: true},
     {src: '@/plugins/lockr', ssr: true},
-    {src: '@/plugins/axios', ssr: true}
+    {src: '@/plugins/axios', ssr: true},
+    {src: '@/plugins/vuescroll', ssr: true}
   ],
   route: {
     extendRoutes (routes, resolve) {
@@ -60,7 +62,7 @@ module.exports = {
   },
   proxy: {
     '/api': {
-      target: 'http://192.168.0.104:3001',
+      target: 'http://192.168.0.103:3001',
       changeOrigin: true,
       pathRewrite: {
         '^/api': '/api'

@@ -44,6 +44,7 @@ export default {
             categoryId: ''
         }
         let {data} = await app.$axios.get('/api/article/list', {params})
+        console.log(data)
         return {info: data.data || []}
     }
 }

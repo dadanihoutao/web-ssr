@@ -15,6 +15,7 @@ export default function ({ $axios, redirect, app }) {
         config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
         // 请求头参数处理
         config.headers['Authorization'] = 'Bearer undefined'
+        console.log(config)
         config.data = qs.stringify(config.data)
         return config
     }, (error) => {

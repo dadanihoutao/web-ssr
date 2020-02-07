@@ -4,31 +4,32 @@
             <!-- <span class="iconfont icon-dengdaiqueren"></span> -->
             <div class="article-list">
                 <div class="left-box">
-                    <ul class="list">
-                        <li v-for="item in 10" :key="item">
+                    <ul class="list" v-if="Array.isArray(listData) && listData.length">
+                        <li v-for="item in listData" :key="item.id">
                             <div class="left-img">
-                                <img :src="defaultImg" alt="">
+                                <img v-if="item.cover" :src="item.cover" alt="">
+                                <img v-else :src="defaultImg" alt="">
                             </div>
                             <div class="right-text">
-                                <h2>文章标题啊啊打发斯蒂芬阿斯蒂芬大师傅</h2>
+                                <h2>{{ item.title }}</h2>
                                 <p>文章内容一部分</p>
                                 <div class="labels">
-                                    <span class="label">html</span>
+                                    <span class="label">{{ item.category_name }}</span>
                                     <span>
                                         <Icon class="icons" type="ios-person-outline" />
-                                        阿阳
+                                        {{ item.author }}
                                     </span>
                                     <span>
                                         <Icon class="icons" type="ios-eye-outline" />
-                                        999
+                                        {{ item.browse }}
                                     </span>
                                     <span>
                                         <Icon class="icons" type="ios-text-outline" />
-                                        评论1
+                                        {{ item.comments_sum }}
                                     </span>
                                     <span>
                                         <Icon class="icons" type="ios-time-outline" />
-                                        2019-00-00 00:00:00
+                                        {{ item.created_at }}
                                     </span>
                                 </div>
                             </div>
@@ -45,7 +46,7 @@
                                 <h2>文章分类</h2>
                             </div>
                             <ul class="list">
-                                <li v-for="item in 10" :key="item"><Button type="text">html（3）</Button></li>
+                                <li v-for="item in categoryList" :key="item.id"><Button type="text">{{ item.name }}（{{ item.category_sum }}）</Button></li>
                             </ul>
                         </div>
                         <div class="link-list">
@@ -83,7 +84,21 @@ export default {
             categoryId: '',
             searchVal: ''
         }
-        let {data} = await app.$axios.get('/api/article/list', {params})
+        // let {data} = await app.$axios.get('/api/article/list', {params})
+        // // console.log(data)
+        // if (data.code === 200) {
+        //     return { listData: data.data }
+        // }
+        // let result = (await app.$axios.get('/api/category/list')).data
+        let [ data1, data2 ] = await Promise.all([
+            app.$axios.get('/api/article/list', {params}),
+            app.$axios.get('/api/category/list')
+        ])
+        return {
+            listData: data1.data.data || [],
+            categoryList: data2.data.data || []
+        }
+        // console.log(result)
         // console.log(data)
         // this.$get('/api/article/list', params).then(res => {
         //     if (res.code === 200) {

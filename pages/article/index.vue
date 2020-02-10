@@ -1,7 +1,6 @@
 <template>
     <y-layout>
         <div slot="content">
-            <!-- <span class="iconfont icon-dengdaiqueren"></span> -->
             <div class="article-list">
                 <div class="left-box">
                     <ul class="list" v-if="Array.isArray(listData) && listData.length">
@@ -10,9 +9,9 @@
                                 <img v-if="item.cover" :src="item.cover" alt="">
                                 <img v-else :src="defaultImg" alt="">
                             </div>
-                            <div class="right-text">
+                            <div class="right-text" @click="handleToDetail(item)">
                                 <h2>{{ item.title }}</h2>
-                                <p>文章内容一部分</p>
+                                <p>{{ item.content }}</p>
                                 <div class="labels">
                                     <span class="label">{{ item.category_name }}</span>
                                     <span>
@@ -35,6 +34,9 @@
                             </div>
                         </li>
                     </ul>
+                    <div v-else class="no-data">
+                        <p>暂无数据</p>
+                    </div>
                     <div class="list-footer">
                         <Page :total="total" :current="page" :page-size="pageSize" show-total show-elevator @on-change="changePage"></Page>
                     </div>
@@ -46,7 +48,7 @@
                                 <h2>文章分类</h2>
                             </div>
                             <ul class="list">
-                                <li v-for="item in categoryList" :key="item.id"><Button type="text">{{ item.name }}（{{ item.category_sum }}）</Button></li>
+                                <li v-for="item in categoryList" @click="searchCategory(item)" :key="item.id"><Button type="text">{{ item.name }}（{{ item.category_sum }}）</Button></li>
                             </ul>
                         </div>
                         <div class="link-list">
@@ -82,37 +84,55 @@ export default {
             pageSize: 10,
             order: 0,
             categoryId: '',
-            searchVal: ''
+            searchVal: '',
         }
-        // let {data} = await app.$axios.get('/api/article/list', {params})
-        // // console.log(data)
-        // if (data.code === 200) {
-        //     return { listData: data.data }
-        // }
-        // let result = (await app.$axios.get('/api/category/list')).data
         let [ data1, data2 ] = await Promise.all([
             app.$axios.get('/api/article/list', {params}),
             app.$axios.get('/api/category/list')
         ])
         return {
             listData: data1.data.data || [],
-            categoryList: data2.data.data || []
+            categoryList: data2.data.data || [],
+            page: data1.data.page.curPage,
+            pageSize: data1.data.page.pageSize,
+            total: data1.data.page.total
         }
-        // console.log(result)
-        // console.log(data)
-        // this.$get('/api/article/list', params).then(res => {
-        //     if (res.code === 200) {
-        //         this.listData = res.data
-        //         this.total = res.page.total
-        //         this.page = res.page.curPage
-        //     } else {
-        //         this.$Message.error(res.msg)
-        //     }
-        // })
     },
     methods: {
+        searchCategory (data) {
+            this.categoryId = data.id
+            this.getList()
+        },
+        getList () {
+            let params = {
+                page: this.page,
+                pageSize: this.pageSize,
+                order: this.order,
+                categoryId: this.categoryId,
+                searchVal: this.searchVal
+            }
+            this.$axios.get('/api/article/list', {params}).then(res => {
+                if (res.data.code === 200) {
+                    this.listData = res.data.data
+                    this.total = res.data.page.total
+                    this.page = res.data.page.curPage
+                } else {
+                    this.$Message.error(res.data.msg)
+                }
+            })
+        },
+        handleToDetail (item) {
+            console.log(item)
+            this.$router.push({
+                path: '/article/detail/' + item.id,
+            })
+        },
         changePage (page) {
-            console.log(page)
+            this.page = page
+            this.getList()
+        },
+        openLink (url) {
+            window.open(url)
         }
     }
 }
@@ -185,6 +205,18 @@ export default {
                 }
             }
         }
+        .no-data {
+            width: 100%;
+            height: 220px;
+            margin-bottom: 15px;
+            background-color: rgba(255,255,255,.5);
+            box-shadow: 0px 0px 6px rgba(63,74,105,.16);
+            border-radius: 3px;
+            text-align: center;
+            line-height: 220px;
+            font-size: 14px;
+            color: #666666;
+        }
         .list-footer {
             width: 100%;
             text-align: center;
@@ -217,6 +249,10 @@ export default {
                     padding: 5px 0;
                     button {
                         padding: 0;
+                        font-size: 14px;
+                        &:hover {
+                            background: transparent;
+                        }
                     }
                 }
             }

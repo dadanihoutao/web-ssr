@@ -1,3 +1,9 @@
+/**
+ * @Author: 阿洋
+ * @Last Modified by: ayang
+ * @Last Modified time: 2020-02-04 21:50:29
+ */
+
 export default ({ app }) => {
     app.router.beforeEach((to, from, next) => {
         // console.log(to.path)

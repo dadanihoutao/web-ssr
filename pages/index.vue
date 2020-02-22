@@ -1,60 +1,17 @@
 <template>
     <div class="list-page">
-        <!-- <Dropdown>
-            <a href="javascript:void(0)">
-                下拉菜单
-                <Icon type="ios-arrow-down"></Icon>
-            </a>
-            <DropdownMenu slot="list">
-                <DropdownItem v-for="item in info" :key="item.id" :name="item.id">{{ item.title }}</DropdownItem>
-            </DropdownMenu>
-        </Dropdown> -->
     </div>
 </template>
-
 <script>
 export default {
     layout: 'default',
     data () {
-        return {
-            name: '这是请求页面',
-            data: {},
-            // params: {
-            //     page: 1,
-            //     pageSize: 10,
-            //     order: 0,
-            //     categoryId: ''
-            // }
-        }
+        return {}
     },
     beforeCreate () {
         this.$router.push({
             path: '/article'
         })
-    },
-    created () {
-        // console.log(111)
-    },
-    // async asyncData ({app}) {
-    //     // console.log(app)
-    //     const paramsData = {
-    //         page: 1,
-    //         pageSize: 10,
-    //         order: 0,
-    //         categoryId: ''
-    //     }
-    //     let {data} = await app.$axios.get('/api/article/list', {paramsData})
-    //     // console.log(111)
-    //     // console.log(data)
-    //     return {info: data.data || []}
-    // }
-}
-</script>
-<style lang="less">
-.list-page {
-    ul li {
-        font-size: 20px;
-        color: red;
     }
 }
-</style>
+</script>

@@ -3,24 +3,21 @@
         <div class="bg"></div>
         <div class="layout-header">
             <div class="header-wrap">
-                <h3>博客频道</h3>
+                <h3>哼哼嘻的博客</h3>
                 <ul>
-                    <li class="active"><nuxt-link to="/">首页</nuxt-link></li>
-                    <li><a>最新</a></li>
-                    <li><a>最热</a></li>
-                    <li><nuxt-link to="/about">关于</nuxt-link></li>
+                    <li :class="{'active': active === 0}"><nuxt-link to="/">首页</nuxt-link></li>
+                    <li @click="toFilter(0)" :class="{'active': active === 1}"><a>最新</a></li>
+                    <li @click="toFilter(1)" :class="{'active': active === 2}"><a>最热</a></li>
+                    <li :class="{'active': active === 3}"><nuxt-link to="/about">关于</nuxt-link></li>
                 </ul>
                 <div class="search-input">
-                    <Input placeholder="请输入搜索内容" size="large">
+                    <Input v-model="searchVal" @on-enter="toSearchVal" placeholder="请输入搜索内容" size="large">
                         <Icon type="ios-search" slot="prefix" />
                     </Input>
                 </div>
             </div>
         </div>
         <div class="layout-content">
-            <!-- <vue-scroll>
-                <slot name="content"></slot>
-            </vue-scroll> -->
             <slot name="content"></slot>
         </div>
         <div class="layout-footer">
@@ -31,6 +28,53 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    data () {
+        return {
+            active: '',
+            searchVal: ''
+        }
+    },
+    watch: {
+        '$route': {
+            handler (nVal) {
+                if (nVal.path === '/article' && Object.keys(nVal.query).length === 0) {
+                    this.active = 0
+                } else if (nVal.query.order == 0) {
+                    this.active = 1
+                } else if (nVal.query.order == 1) {
+                    this.active = 2
+                } else if (nVal.path === '/about') {
+                    this.active = 3
+                } else if (nVal.query.searchVal || nVal.path.includes('detail') || nVal.query.categoryId) {
+                    if (nVal.query.searchVal) this.searchVal = nVal.query.searchVal
+                    this.active = 0
+                }
+            },
+            immediate: true
+        }
+    },
+    methods: {
+        toFilter (num) {
+            this.$router.push({
+                path: '/article',
+                query: { order: num }
+            })
+        },
+        toSearchVal () {
+            if (this.searchVal) {
+                this.$router.push({
+                    path: '/article',
+                    query: { searchVal: this.searchVal }
+                })
+            } else {
+                this.$router.push('/article')
+            }
+        }
+    }
+}
+</script>
 <style lang="less">
 .layout {
     width: 100%;

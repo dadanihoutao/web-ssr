@@ -42,49 +42,55 @@
                     </div>
                 </div>
                 <div class="right-box">
-                    <Affix :offset-top="95">
-                        <div class="classfiy">
-                            <div class="header">
-                                <h2>文章分类</h2>
-                            </div>
-                            <ul class="list">
-                                <li v-for="item in categoryList" @click="searchCategory(item)" :key="item.id"><Button type="text">{{ item.name }}（{{ item.category_sum }}）</Button></li>
-                            </ul>
-                        </div>
-                        <div class="link-list">
-                            <div class="header">
-                                <h2>外部链接</h2>
-                            </div>
-                            <ul class="list">
-                                <li v-for="(item, index) in linkList" :key="index"><Button @click="openLink(item.link)" type="text">{{ item.name }}</Button></li>
-                            </ul>
-                        </div>
-                    </Affix>
+                    <side-bar :categoryList="categoryList" @on-searchCategory="searchCategory"></side-bar>
                 </div>
             </div>
         </div>
     </y-layout>
 </template>
 <script>
-import linkList from '@/data/link.json'
+import sideBar from '@/components/sideBar.vue'
 export default {
+    layout: 'default',
+    components: {
+        sideBar
+    },
     data () {
         return {
             defaultImg: require('@/assets/images/defaultImg.jpg'),
-            linkList: linkList,
             total: 0,
             page: 1,
             pageSize: 10,
             order: 0
         }
     },
-    async asyncData ({app}) {
+    watch: {
+        '$route.query' (nVal) {
+            if (Object.keys(nVal).length) {
+                if (nVal.order === 0 || nVal.order === 1) {
+                    this.categoryId = ''
+                    this.searchVal = ''
+                    this.order = nVal.order
+                    this.getList()
+                } else if (nVal.searchVal) {
+                    this.searchVal = nVal.searchVal
+                    this.getList()
+                }
+            } else {
+                this.order = ''
+                this.categoryId = ''
+                this.searchVal = ''
+                this.getList()
+            }
+        }
+    },
+    async asyncData ({app, query}) {
         let params = {
             page: 1,
             pageSize: 10,
-            order: 0,
-            categoryId: '',
-            searchVal: '',
+            order: (query.order === 0 || query.order === 1) ? query.order : '',
+            categoryId: query.categoryId ? query.categoryId : '',
+            searchVal: query.searchVal ? query.searchVal : '',
         }
         let [ data1, data2 ] = await Promise.all([
             app.$axios.get('/api/article/list', {params}),
@@ -122,7 +128,6 @@ export default {
             })
         },
         handleToDetail (item) {
-            console.log(item)
             this.$router.push({
                 path: '/article/detail/' + item.id,
             })
@@ -225,38 +230,6 @@ export default {
     }
     .right-box {
         width: 285px;
-        .classfiy, .link-list {
-            width: 100%;
-            background-color: rgba(255,255,255,.5);
-            box-shadow: 0px 0px 6px rgba(63,74,105,.16);
-            border-radius: 3px;
-            margin-bottom: 15px;
-            padding: 0 15px 8px;
-            .header {
-                border-bottom: 1px solid #e6e6e6;
-                h2 {
-                    font-size: 18px;
-                    height: 44px;
-                    line-height: 44px;
-                    border-bottom: 1px solid #666666;
-                    display: inline-block;
-                    transform: translateY(1px);
-                }
-            }
-            .list {
-                padding: 10px 0 0 0;
-                li {
-                    padding: 5px 0;
-                    button {
-                        padding: 0;
-                        font-size: 14px;
-                        &:hover {
-                            background: transparent;
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 </style>

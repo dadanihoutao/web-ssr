@@ -145,7 +145,7 @@ export default {
         width: 1100px;
         margin: 0 auto 0;
         padding: 95px 0 10px 0;
-        min-height: 854px;
+        min-height: 1000px;
     }
     .layout-footer {
         width: 100%;

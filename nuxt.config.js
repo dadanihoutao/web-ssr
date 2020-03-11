@@ -69,7 +69,8 @@ module.exports = {
   },
   proxy: {
     '/api': {
-      target: 'http://192.168.0.104:3001',
+      // target: 'http://192.168.0.104:3001',
+      target: 'http://www.lokiblog.com:3001',
       changeOrigin: true,
       pathRewrite: {
         '^/api': '/api'

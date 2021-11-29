@@ -23,7 +23,7 @@
   "devDependencies": {
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
-    "mavon-editor": "^2.7.7",
+    "mavon-editor": "^2.8.2",
     "nodemon": "^1.18.9",
     "vuescroll": "^4.14.4"
   }
